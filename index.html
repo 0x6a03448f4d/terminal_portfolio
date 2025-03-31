@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        /* Watermark: 0x6a03448f4d's Terminal Portfolio - 2025 */
+        /* License: This code is licensed under the MIT License with additional restrictions. Unauthorized copying, distribution, or modification is prohibited without explicit permission from 0x6a03448f4d. */
+        body {
+            background-color: #000000;
+            color: #00FF00;
+            font-family: 'VT323', monospace;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+            transition: background-color 0.5s, color 0.5s;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        body.defensive-mode {
+            background-color: #F0F0F0;
+            color: #000000;
+        }
+        .intro-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #000000;
+            z-index: 1000;
+            transition: background-color 0.5s;
+        }
+        .intro-page.defensive-mode {
+            background: #F0F0F0;
+        }
+        .intro-name {
+            font-size: 12vw;
+            animation: shrink 1s 1s forwards;
+            text-shadow: 0 0 10px #00FF00;
+        }
+        .intro-page.defensive-mode .intro-name {
+            text-shadow: 0 0 10px #000000;
+        }
+        .intro-text {
+            font-size: clamp(18px, 5vw, 28px);
+            margin: 20px 0;
+            opacity: 0;
+            animation: fadeIn 1s 2s forwards;
+            text-align: center;
+        }
+        .enter-btn {
+            font-size: clamp(16px, 4vw, 24px);
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid #00FF00;
+            color: #00FF00;
+            cursor: pointer;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 1s 2s forwards;
+            transition: all 0.3s;
+        }
+        body.defensive-mode .enter-btn {
+            border-color: #000000;
+            color: #000000;
+        }
+        .enter-btn:hover {
+            background: #00FF00;
+            color: #000000;
+            box-shadow: 0 0 15px #00FF00;
+        }
+        body.defensive-mode .enter-btn:hover {
+            background: #000000;
+            color: #F0F0F0;
+            box-shadow: 0 0 15px #000000;
+        }
+        @keyframes shrink {
+            0% { font-size: 12vw; }
+            100% { font-size: 6vw; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .terminal-container {
+            position: relative;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 1s;
+            padding: 0 10px;
+        }
+        .terminal-container.active {
+            opacity: 1;
+        }
+        .terminal-tabs {
+            background-color: #000000;
+            border: 3px solid #00FF00;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 0 20px #00FF00;
+            position: relative;
+            overflow: hidden;
+            margin-top: 80px;
+            width: 90%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: clamp(16px, 3vw, 24px);
+            transition: background-color 0.5s, border-color 0.5s, color 0.5s;
+        }
+        body.defensive-mode .terminal-tabs {
+            background-color: #FFFFFF;
+            border-color: #000000;
+            box-shadow: 0 0 20px #000000;
+        }
+        .tab-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #00FF00;
+            background: #000000;
+            transition: background-color 0.5s, border-color 0.5s;
+        }
+        body.defensive-mode .tab-buttons {
+            border-bottom-color: #000000;
+            background: #FFFFFF;
+        }
+        .tab-btn {
+            padding: 8px 20px;
+            cursor: pointer;
+            border-right: 2px solid #00FF00;
+            transition: all 0.3s;
+            font-size: clamp(14px, 3vw, 26px);
+            flex: 1 1 auto;
+            text-align: center;
+        }
+        body.defensive-mode .tab-btn {
+            border-right-color: #000000;
+        }
+        .tab-btn:hover, .tab-btn.active {
+            background: #00FF00;
+            color: #000000;
+        }
+        body.defensive-mode .tab-btn:hover, body.defensive-mode .tab-btn.active {
+            background: #000000;
+            color: #FFFFFF;
+        }
+        .tab-content {
+            padding: 30px;
+            display: none;
+            min-height: 70vh;
+            animation: glitch 2s infinite;
+            position: relative;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        #about, #about.active {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .blink-cursor {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .typed-text {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #00FF00;
+            animation: typing 3.5s steps(40, end);
+            transition: border-color 0.5s;
+        }
+        body.defensive-mode .typed-text {
+            border-right-color: #000000;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes glitch {
+            2%, 64% { transform: translate(2px, 0) skew(0deg); }
+            4%, 60% { transform: translate(-2px, 0) skew(0deg); }
+            62% { transform: translate(0, 0) skew(5deg); }
+        }
+        .terminal-tabs::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,255,0,0.05) 50%, transparent 50%);
+            animation: scanline 4s linear infinite;
+            pointer-events: none;
+        }
+        body.defensive-mode .terminal-tabs::before {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.05) 50%, transparent 50%);
+        }
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        a {
+            color: #00FF00;
+            text-decoration: none;
+            transition: color 0.5s;
+        }
+        body.defensive-mode a {
+            color: #000000;
+        }
+        a:hover {
+            text-decoration: underline;
+            animation: glitch 0.3s;
+        }
+        .name-svg-container {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: clamp(150px, 30vw, 250px);
+        }
+        .name-svg {
+            animation: wave 2s infinite;
+        }
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .terminal-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #00FF00;
+            font-family: 'VT323', monospace;
+            font-size: clamp(14px, 3vw, 24px);
+            outline: none;
+            transition: color 0.5s;
+        }
+        body.defensive-mode .terminal-input {
+            color: #000000;
+        }
+        .terminal-output {
+            margin-top: 15px;
+        }
+        .vim-mode {
+            display: none;
+            background: #000000;
+            padding: 20px;
+            border: 1px dashed #00FF00;
+            white-space: pre-wrap;
+            transition: background-color 0.5s, border-color 0.5s;
+        }
+        body.defensive-mode .vim-mode {
+            background: #FFFFFF;
+            border-color: #000000;
+        }
+        .vim-mode.active {
+            display: block;
+        }
+        footer {
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            color: #00FF00;
+            font-size: clamp(12px, 2vw, 16px);
+            opacity: 0.7;
+            transition: color 0.5s;
+        }
+        body.defensive-mode footer {
+            color: #000000;
+        }
+        .watermark {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            color: #00FF00;
+            font-size: clamp(10px, 2vw, 14px);
+            opacity: 0.5;
+            z-index: 100;
+            transition: color 0.5s;
+        }
+        body.defensive-mode .watermark {
+            color: #000000;
+        }
+        .packet {
+            position: absolute;
+            color: #00FF00;
+            font-size: 12px;
+            animation: movePacket 5s linear infinite;
+        }
+        body.defensive-mode .packet {
+            color: #000000;
+        }
+        @keyframes movePacket {
+            0% { left: -100px; top: 0; }
+            100% { left: 100%; top: 100%; }
+        }
+        @media (max-width: 768px) {
+            .terminal-tabs {
+                margin-top: 60px;
+                width: 95%;
+            }
+            .tab-buttons {
+                flex-direction: column;
+            }
+            .tab-btn {
+                border-right: none;
+                border-bottom: 1px solid #00FF00;
+            }
+            body.defensive-mode .tab-btn {
+                border-bottom-color: #000000;
+            }
+            .tab-content {
+                padding: 20px;
+                min-height: 50vh;
+            }
+            #about, #about.active {
+                max-height: 50vh;
+            }
+        }
+        @media (max-width: 480px) {
+            .terminal-tabs {
+                margin-top: 40px;
+                font-size: clamp(14px, 4vw, 20px);
+            }
+            .tab-btn {
+                padding: 6px 10px;
+            }
+            .intro-name {
+                font-size: 15vw;
+            }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+    <div class="intro-page" id="introPage">
+        <span class="intro-name">0x6a03448f4d</span>
+        <div class="intro-text">Cybersecurity Student | Security Analyst | Lisbon, PT</div>
+        <button class="enter-btn" id="enterTerminal">> ENTER TERMINAL</button>
+    </div>
+
+    <div class="container terminal-container" id="terminalContainer">
+        <div class="name-svg-container">
+            <svg class="name-svg" width="100%" height="60" viewBox="0 0 250 60">
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#00FF00">
+                    0x6a03448f4d
+                </text>
+            </svg>
+        </div>
+
+        <div class="terminal-tabs" id="terminalTabs">
+            <div class="tab-buttons">
+                <div class="tab-btn active" data-tab="home">> HOME</div>
+                <div class="tab-btn" data-tab="about">> ABOUT</div>
+                <div class="tab-btn" data-tab="projects">> PROJECTS</div>
+                <div class="tab-btn" data-tab="contact">> CONTACT</div>
+                <div class="tab-btn" data-tab="console">> CONSOLE</div>
+                <div class="tab-btn" data-tab="games">> GAMES</div>
+                <div class="tab-btn" data-tab="articles"><a href="articles.html" style="color: inherit;">> ARTICLES</a></div>
+            </div>
+
+            <div class="tab-content active" id="home">
+                <div class="command-line">
+                    <span class="typed-text">root@portfolio:~$ whoami</span>
+                </div>
+                <div class="command-line">
+                    <p>0x6a03448f4d - Cybersecurity Student & Security Analyst</p>
+                    <p>📍 Based in Lisbon, Portugal 🇵🇹</p>
+                    <p>🎓 Studying Cybersecurity at ISCTE - University Institute of Lisbon</p>
+                </div>
+                <div class="command-line">
+                    <span>root@portfolio:~$ <span class="blink-cursor">_</span></span>
+                </div>
+            </div>
+
+            <div class="tab-content" id="about">
+                <div class="command-line">
+                    <span class="typed-text">root@portfolio:~$ cat /etc/about</span>
+                </div>
+                <div class="command-line">
+                    <p>Type 'vim' in the console to view in Vim mode</p>
+                </div>
+                <div class="vim-mode" id="vimAbout">
+                    <p>:about.txt    " About me - press :q to exit</p>
+                    <p>🚀 Skills, Tools & Tech Stack:</p>
+                    <p>🛡️ Cyber Security Skills:</p>
+                    <ul>
+                        <li>🛡 Cyber Defense</li>
+                        <li>🎯 Penetration Testing</li>
+                        <li>🔍 Digital Forensics</li>
+                        <li>🔐 Cryptography</li>
+                    </ul>
+                    <p>🛠️ Cyber Security Tools:</p>
+                    <ul>
+                        <li>🐉 Kali Linux</li>
+                        <li>🦈 Wireshark</li>
+                        <li>📊 Splunk</li>
+                        <li>📈 Kibana</li>
+                        <li>🔎 Elastic Stack</li>
+                        <li>🦠 Nmap</li>
+                    </ul>
+                    <p>💻 Programming & Development:</p>
+                    <ul>
+                        <li>🐍 Python</li>
+                        <li>📜 JavaScript</li>
+                        <li>🖥 Bash Scripting</li>
+                        <li>⚡ PowerShell</li>
+                        <li>🐳 Docker</li>
+                    </ul>
+                    <p>🏴‍☠️ Operating Systems:</p>
+                    <ul>
+                        <li>🐧 Linux</li>
+                        <li>🏁 Windows</li>
+                        <li>📦 VMware</li>
+                    </ul>
+                    <p>📝 Documentation:</p>
+                    <ul>
+                        <li>🗒 Obsidian</li>
+                        <li>📄 Microsoft Word</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tab-content" id="projects">
+                <div class="command-line">
+                    <span class="typed-text">root@portfolio:~$ dir /projects</span>
+                </div>
+                <div class="command-line">
+                    <p>Ongoing Projects:</p>
+                    <ul>
+                        <li><a href="#">Cyber Defense Dashboard</a> - Splunk monitoring dashboard</li>
+                        <li><a href="#">Pen Test Automation</a> - Python script with Nmap</li>
+                        <li><a href="#">Terminal Portfolio</a> - This site in JS and HTML</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tab-content" id="contact">
+                <div class="command-line">
+                    <span class="typed-text">root@portfolio:~$ netstat -c</span>
+                </div>
+                <div class="command-line">
+                    <p>📫 Connect with me:</p>
+                    <p>LinkedIn: <a href="#">linkedin.com/in/your-profile</a></p>
+                    <p>Email: <a href="mailto:your@email.com">your@email.com</a></p>
+                    <p>HackTheBox: <a href="#">hackthebox.com/your-profile</a></p>
+                    <p>GitHub: <a href="#">github.com/your-username</a></p>
+                    <p>echo "Stay safe, stay anonymous."</p>
+                </div>
+            </div>
+
+            <div class="tab-content" id="console">
+                <div class="command-line">
+                    <span class="typed-text">root@portfolio:~$ help</span>
+                </div>
+                <div class="command-line">
+                    <p>Available Commands:</p>
+                    <p>- vim: Open Vim mode in About</p>
+                    <p>- theme [color]: Change terminal color (e.g., green, blue, purple)</p>
+                    <p>- mode [pentester/defensive]: Switch between Pentester (dark) and Defensive (light) modes</p>
+                </div>
+                <div class="command-line">
+                    <span>root@portfolio:~$ </span>
+                    <input type="text" class="terminal-input" id="terminalInput" placeholder="Type a command...">
+                </div>
+                <div class="terminal-output" id="terminalOutput"></div>
+            </div>
+
+            <div class="tab-content" id="games">
+                <div class="command-line">
+                    <span class="typed-text">root@portfolio:~$ games --help</span>
+                </div>
+                <div class="command-line">
+                    <p>Available Games & Easter Eggs:</p>
+                    <p>- hack: Start a hack simulation</p>
+                    <p>- code: Show a code snippet</p>
+                    <p>- scan: Perform a mock network scan</p>
+                    <p>- clear: Clear the game output</p>
+                    <p>- crack: Try to crack the secret code!</p>
+                    <p>- hackgame: Start a password guessing challenge</p>
+                    <p>- sniff: Simulate packet sniffing</p>
+                    <p>- matrix: Enter the Matrix with digital rain</p>
+                    <p>- secret: Unlock a hidden message</p>
+                    <p>- 1337: Confirm elite hacker status</p>
+                </div>
+                <div class="command-line">
+                    <span>root@portfolio:~$ </span>
+                    <input type="text" class="terminal-input" id="gamesInput" placeholder="Type a game command...">
+                </div>
+                <div class="terminal-output" id="gamesOutput"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>© 2025 0x6a03448f4d - All rights reserved</footer>
+    <div class="watermark">0x6a03448f4d's Terminal Portfolio</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script>
+        // Watermark: 0x6a03448f4d's Terminal Portfolio - 2025
+        // License: This code is licensed under the MIT License with additional restrictions. Unauthorized copying, distribution, or modification is prohibited without explicit permission from 0x6a03448f4d.
+
+        (function() {
+            const originalLog = console.log;
+            console.log = function() {};
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && (e.key === 'u' || e.key === 's')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        })();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const introPage = document.getElementById('introPage');
+            const terminalContainer = document.getElementById('terminalContainer');
+            const enterBtn = document.getElementById('enterTerminal');
+            const terminalInput = document.getElementById('terminalInput');
+            const terminalOutput = document.getElementById('terminalOutput');
+            const gamesInput = document.getElementById('gamesInput');
+            const gamesOutput = document.getElementById('gamesOutput');
+            const terminalTabs = document.getElementById('terminalTabs');
+            const vimAbout = document.getElementById('vimAbout');
+            const body = document.body;
+
+            const savedTab = localStorage.getItem('activeTab') || 'home';
+            const savedMode = localStorage.getItem('mode');
+            const savedTheme = JSON.parse(localStorage.getItem('theme')) || { bg: '#000000', text: '#00FF00', border: '#00FF00' };
+
+            terminalTabs.style.backgroundColor = savedTheme.bg;
+            terminalTabs.style.color = savedTheme.text;
+            terminalTabs.style.borderColor = savedTheme.border;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.style.borderColor = savedTheme.border;
+            });
+            document.querySelector('.tab-buttons').style.borderColor = savedTheme.border;
+            terminalInput.style.color = savedTheme.text;
+            gamesInput.style.color = savedTheme.text;
+
+            if (savedMode === 'defensive') {
+                body.classList.add('defensive-mode');
+            }
+
+            if (localStorage.getItem('terminalAccessed') === 'true') {
+                introPage.style.display = 'none';
+                terminalContainer.classList.add('active');
+            }
+
+            enterBtn.addEventListener('click', () => {
+                introPage.style.animation = 'fadeOut 1s forwards';
+                terminalContainer.classList.add('active');
+                localStorage.setItem('terminalAccessed', 'true');
+                setTimeout(() => {
+                    introPage.style.display = 'none';
+                }, 1000);
+            });
+
+            const typedElements = document.querySelectorAll('.typed-text');
+            typedElements.forEach(element => {
+                element.style.animation = 'typing 3.5s steps(40, end)';
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            document.querySelector(`[data-tab="${savedTab}"]`).classList.add('active');
+            document.getElementById(savedTab).classList.add('active');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const tabId = button.getAttribute('data-tab');
+                    if (tabId !== 'articles') {
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        tabContents.forEach(content => content.classList.remove('active'));
+                        button.classList.add('active');
+                        document.getElementById(tabId).classList.add('active');
+                        localStorage.setItem('activeTab', tabId);
+
+                        if (tabId === 'console') {
+                            terminalInput.focus();
+                        } else if (tabId === 'games') {
+                            gamesInput.focus();
+                        }
+                    }
+                });
+            });
+
+            terminalInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const command = terminalInput.value.toLowerCase().trim();
+                    terminalOutput.innerHTML = '';
+
+                    switch (true) {
+                        case command === 'vim':
+                            tabButtons.forEach(btn => btn.classList.remove('active'));
+                            tabContents.forEach(content => content.classList.remove('active'));
+                            document.querySelector('[data-tab="about"]').classList.add('active');
+                            document.getElementById('about').classList.add('active');
+                            vimAbout.classList.add('active');
+                            terminalOutput.innerHTML = '<p>Vim mode activated. About me opened in "about".</p>';
+                            localStorage.setItem('activeTab', 'about');
+                            break;
+                        case command.startsWith('theme'):
+                            const color = command.split(' ')[1] || 'green';
+                            const themes = {
+                                green: { bg: '#000000', text: '#00FF00', border: '#00FF00' },
+                                blue: { bg: '#001f3f', text: '#00FFFF', border: '#00FFFF' },
+                                purple: { bg: '#1a001a', text: '#FF00FF', border: '#FF00FF' },
+                                red: { bg: '#2d0000', text: '#FF4444', border: '#FF4444' }
+                            };
+                            const selectedTheme = themes[color] || themes.green;
+                            terminalTabs.style.backgroundColor = selectedTheme.bg;
+                            terminalTabs.style.color = selectedTheme.text;
+                            terminalTabs.style.borderColor = selectedTheme.border;
+                            document.querySelectorAll('.tab-btn').forEach(btn => {
+                                btn.style.borderColor = selectedTheme.border;
+                            });
+                            document.querySelector('.tab-buttons').style.borderColor = selectedTheme.border;
+                            terminalInput.style.color = selectedTheme.text;
+                            gamesInput.style.color = selectedTheme.text;
+                            terminalOutput.innerHTML = `<p>Theme changed to "${color}".</p>`;
+                            localStorage.setItem('theme', JSON.stringify(selectedTheme));
+                            break;
+                        case command.startsWith('mode'):
+                            const mode = command.split(' ')[1];
+                            if (mode === 'pentester') {
+                                body.classList.remove('defensive-mode');
+                                terminalOutput.innerHTML = '<p>Switched to Pentester (dark) mode.</p>';
+                                localStorage.setItem('mode', 'pentester');
+                            } else if (mode === 'defensive') {
+                                body.classList.add('defensive-mode');
+                                terminalOutput.innerHTML = '<p>Switched to Defensive (light) mode.</p>';
+                                localStorage.setItem('mode', 'defensive');
+                            } else {
+                                terminalOutput.innerHTML = `
+                                    <p>Invalid mode. Use: mode pentester or mode defensive</p>
+                                `;
+                            }
+                            break;
+                        default:
+                            terminalOutput.innerHTML = `
+                                <p>Command not found: "${command}"</p>
+                                <p>Try: vim, theme [color], mode [pentester/defensive]</p>
+                            `;
+                    }
+                    terminalInput.value = '';
+                }
+            });
+
+            gamesInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const command = gamesInput.value.toLowerCase().trim();
+                    gamesOutput.innerHTML = '';
+
+                    switch (true) {
+                        case command === 'hack':
+                            gamesOutput.innerHTML = `
+                                <p>Starting hack simulation...</p>
+                                <p>[+] Injecting payload: SQLmap -u "http://target.com" --dbs</p>
+                                <p>[+] Database found: admin_db</p>
+                                <p>[+] Access granted! Flag: {HACK_THE_PLANET}</p>
+                            `;
+                            break;
+                        case command === 'code':
+                            gamesOutput.innerHTML = `
+                                <p>Displaying code snippet:</p>
+                                <pre>
+function secureLogin(user, pass) {
+    const sanitized = DOMPurify.sanitize(user);
+    return fetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify({ user: sanitized, pass })
+    }).then(res => res.json());
+}
+                                </pre>
+                                <p>[+] Code secure against XSS</p>
+                            `;
+                            break;
+                        case command === 'scan':
+                            gamesOutput.innerHTML = `
+                                <p>Starting network scan...</p>
+                                <p>nmap -sS -p 1-65535 192.168.1.1</p>
+                                <p>[+] Open ports: 22, 80, 443</p>
+                                <p>[+] Services: SSH, HTTP, HTTPS</p>
+                                <p>[+] Scan completed in 0.42s</p>
+                            `;
+                            break;
+                        case command === 'clear':
+                            gamesOutput.innerHTML = '';
+                            break;
+                        case command === 'crack':
+                            gamesOutput.innerHTML = `
+                                <p>Crack the secret code!</p>
+                                <p>Hint: What’s essential for a pen tester?</p>
+                                <p>Type: crack [answer]</p>
+                            `;
+                            break;
+                        case command.startsWith('crack '):
+                            const answer = command.split(' ')[1];
+                            if (answer === 'nmap') {
+                                gamesOutput.innerHTML = `
+                                    <p>[+] Code cracked successfully!</p>
+                                    <p>Flag: {CRACK3D_TH3_C0D3}</p>
+                                    <p>Congratulations, hacker!</p>
+                                `;
+                            } else {
+                                gamesOutput.innerHTML = `
+                                    <p>[-] Wrong answer. Try again.</p>
+                                    <p>Hint: Favorite scanning tool.</p>
+                                `;
+                            }
+                            break;
+                        case command === 'hackgame':
+                            gamesOutput.innerHTML = `
+                                <p>[+] Initiating hack challenge...</p>
+                                <p>Guess the password (3 attempts): Type "guess [password]"</p>
+                            `;
+                            sessionStorage.setItem('attempts', '3');
+                            sessionStorage.setItem('password', 'root123');
+                            break;
+                        case command.startsWith('guess '):
+                            const guess = command.split(' ')[1];
+                            const password = sessionStorage.getItem('password');
+                            let attempts = parseInt(sessionStorage.getItem('attempts'));
+                            if (guess === password) {
+                                gamesOutput.innerHTML = `
+                                    <p>[+] Access granted! Flag: {HACKER_PRO}</p>
+                                `;
+                                sessionStorage.removeItem('attempts');
+                                sessionStorage.removeItem('password');
+                            } else {
+                                attempts--;
+                                sessionStorage.setItem('attempts', attempts);
+                                if (attempts > 0) {
+                                    gamesOutput.innerHTML = `
+                                        <p>[-] Wrong password. ${attempts} attempts left.</p>
+                                    `;
+                                } else {
+                                    gamesOutput.innerHTML = `
+                                        <p>[-] Access denied. Out of attempts.</p>
+                                    `;
+                                    sessionStorage.removeItem('attempts');
+                                    sessionStorage.removeItem('password');
+                                }
+                            }
+                            break;
+                        case command === 'sniff':
+                            gamesOutput.innerHTML = `
+                                <p>[+] Sniffing network traffic...</p>
+                            `;
+                            for (let i = 0; i < 10; i++) {
+                                let packet = document.createElement('div');
+                                packet.className = 'packet';
+                                packet.textContent = `Packet #${i}`;
+                                packet.style.top = Math.random() * 100 + '%';
+                                document.body.appendChild(packet);
+                                setTimeout(() => packet.remove(), 5000);
+                            }
+                            break;
+                        case command === 'matrix':
+                            gamesOutput.innerHTML = `
+                                <p>[+] Entering the Matrix...</p>
+                            `;
+                            let canvas = document.createElement('canvas');
+                            canvas.style.position = 'fixed';
+                            canvas.style.top = '0';
+                            canvas.style.left = '0';
+                            canvas.style.zIndex = '9999';
+                            canvas.width = window.innerWidth;
+                            canvas.height = window.innerHeight;
+                            document.body.appendChild(canvas);
+                            let ctx = canvas.getContext('2d');
+                            let chars = '01';
+                            let drops = Array(256).fill(0);
+                            let matrixInterval = setInterval(() => {
+                                ctx.fillStyle = 'rgba(0,0,0,0.05)';
+                                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                                ctx.fillStyle = body.classList.contains('defensive-mode') ? '#000000' : '#00FF00';
+                                drops.forEach((y, i) => {
+                                    let char = chars[Math.floor(Math.random() * chars.length)];
+                                    ctx.fillText(char, i * 10, y);
+                                    drops[i] = y > 800 + Math.random() * 10000 ? 0 : y + 10;
+                                });
+                            }, 30);
+                            setTimeout(() => {
+                                clearInterval(matrixInterval);
+                                canvas.remove();
+                            }, 5000);
+                            break;
+                        case command === 'secret':
+                            gamesOutput.innerHTML = `
+                                <p>[+] Hidden message unlocked: "The Matrix has you..."</p>
+                            `;
+                            break;
+                        case command === '1337':
+                            gamesOutput.innerHTML = `
+                                <p>[+] Elite status confirmed. Flag: {L33T_H4CK3R}</p>
+                            `;
+                            break;
+                        default:
+                            gamesOutput.innerHTML = `
+                                <p>Game not found: "${command}"</p>
+                                <p>Try: hack, code, scan, clear, crack, hackgame, sniff, matrix, secret, 1337</p>
+                            `;
+                    }
+                    gamesInput.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
