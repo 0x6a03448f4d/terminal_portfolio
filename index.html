@@ -348,7 +348,7 @@
 <body oncontextmenu="return false;">
     <div class="intro-page" id="introPage">
         <span class="intro-name">0x6a03448f4d</span>
-        <div class="intro-text">Cybersecurity Student | Security Analyst | Lisbon, PT</div>
+        <div class="intro-text">Cybersecurity Student</div>
         <button class="enter-btn" id="enterTerminal">> ENTER TERMINAL</button>
     </div>
 
@@ -369,7 +369,7 @@
                 <div class="tab-btn" data-tab="contact">> CONTACT</div>
                 <div class="tab-btn" data-tab="console">> CONSOLE</div>
                 <div class="tab-btn" data-tab="games">> GAMES</div>
-                <div class="tab-btn" data-tab="articles"><a href="articles.html" style="color: inherit;">> ARTICLES</a></div>
+                <!--<div class="tab-btn" data-tab="articles"><a href="articles.html" style="color: inherit;">> ARTICLES</a></div>--> Working on it
             </div>
 
             <div class="tab-content active" id="home">
@@ -441,9 +441,8 @@
                 <div class="command-line">
                     <p>Ongoing Projects:</p>
                     <ul>
-                        <li><a href="#">Cyber Defense Dashboard</a> - Splunk monitoring dashboard</li>
-                        <li><a href="#">Pen Test Automation</a> - Python script with Nmap</li>
-                        <li><a href="#">Terminal Portfolio</a> - This site in JS and HTML</li>
+                        <li><a href="#">Mentorship Project</a> - Connect Mentors with Mentees </li>
+                        <li><a href="#">Terminal Portfolio</a> - This site in HTML, CSS, JS and Bootstrap</li>
                     </ul>
                 </div>
             </div>
@@ -454,10 +453,10 @@
                 </div>
                 <div class="command-line">
                     <p>📫 Connect with me:</p>
-                    <p>LinkedIn: <a href="#">linkedin.com/in/your-profile</a></p>
-                    <p>Email: <a href="mailto:your@email.com">your@email.com</a></p>
-                    <p>HackTheBox: <a href="#">hackthebox.com/your-profile</a></p>
-                    <p>GitHub: <a href="#">github.com/your-username</a></p>
+                    <p>LinkedIn: <a href="https://www.linkedin.com/in/cybersecurityalexandre/">/cybersecurityalexandre/</a></p>
+                    <p>Email: <a href="mailto:asoel@iscte-iul.pt">asoel@iscte-iul.pt</a></p>
+                    <p>HackTheBox: <a href="https://github.com/0x6a03448f4d/HTB/blob/main/HTB%20Academy%20Student%20Transcript.pdf">hackthebox</a></p>
+                    <p>GitHub: <a href="https://github.com/0x6a03448f4d">github.com/0x6a03448f4d</a></p>
                     <p>echo "Stay safe, stay anonymous."</p>
                 </div>
             </div>
@@ -510,319 +509,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-    <script>
-        // Watermark: 0x6a03448f4d's Terminal Portfolio - 2025
-        // License: This code is licensed under the MIT License with additional restrictions. Unauthorized copying, distribution, or modification is prohibited without explicit permission from 0x6a03448f4d.
-
-        (function() {
-            const originalLog = console.log;
-            console.log = function() {};
-            document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey && (e.key === 'u' || e.key === 's')) {
-                    e.preventDefault();
-                    return false;
-                }
-            });
-        })();
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const introPage = document.getElementById('introPage');
-            const terminalContainer = document.getElementById('terminalContainer');
-            const enterBtn = document.getElementById('enterTerminal');
-            const terminalInput = document.getElementById('terminalInput');
-            const terminalOutput = document.getElementById('terminalOutput');
-            const gamesInput = document.getElementById('gamesInput');
-            const gamesOutput = document.getElementById('gamesOutput');
-            const terminalTabs = document.getElementById('terminalTabs');
-            const vimAbout = document.getElementById('vimAbout');
-            const body = document.body;
-
-            const savedTab = localStorage.getItem('activeTab') || 'home';
-            const savedMode = localStorage.getItem('mode');
-            const savedTheme = JSON.parse(localStorage.getItem('theme')) || { bg: '#000000', text: '#00FF00', border: '#00FF00' };
-
-            terminalTabs.style.backgroundColor = savedTheme.bg;
-            terminalTabs.style.color = savedTheme.text;
-            terminalTabs.style.borderColor = savedTheme.border;
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.style.borderColor = savedTheme.border;
-            });
-            document.querySelector('.tab-buttons').style.borderColor = savedTheme.border;
-            terminalInput.style.color = savedTheme.text;
-            gamesInput.style.color = savedTheme.text;
-
-            if (savedMode === 'defensive') {
-                body.classList.add('defensive-mode');
-            }
-
-            if (localStorage.getItem('terminalAccessed') === 'true') {
-                introPage.style.display = 'none';
-                terminalContainer.classList.add('active');
-            }
-
-            enterBtn.addEventListener('click', () => {
-                introPage.style.animation = 'fadeOut 1s forwards';
-                terminalContainer.classList.add('active');
-                localStorage.setItem('terminalAccessed', 'true');
-                setTimeout(() => {
-                    introPage.style.display = 'none';
-                }, 1000);
-            });
-
-            const typedElements = document.querySelectorAll('.typed-text');
-            typedElements.forEach(element => {
-                element.style.animation = 'typing 3.5s steps(40, end)';
-            });
-
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            document.querySelector(`[data-tab="${savedTab}"]`).classList.add('active');
-            document.getElementById(savedTab).classList.add('active');
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const tabId = button.getAttribute('data-tab');
-                    if (tabId !== 'articles') {
-                        tabButtons.forEach(btn => btn.classList.remove('active'));
-                        tabContents.forEach(content => content.classList.remove('active'));
-                        button.classList.add('active');
-                        document.getElementById(tabId).classList.add('active');
-                        localStorage.setItem('activeTab', tabId);
-
-                        if (tabId === 'console') {
-                            terminalInput.focus();
-                        } else if (tabId === 'games') {
-                            gamesInput.focus();
-                        }
-                    }
-                });
-            });
-
-            terminalInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    const command = terminalInput.value.toLowerCase().trim();
-                    terminalOutput.innerHTML = '';
-
-                    switch (true) {
-                        case command === 'vim':
-                            tabButtons.forEach(btn => btn.classList.remove('active'));
-                            tabContents.forEach(content => content.classList.remove('active'));
-                            document.querySelector('[data-tab="about"]').classList.add('active');
-                            document.getElementById('about').classList.add('active');
-                            vimAbout.classList.add('active');
-                            terminalOutput.innerHTML = '<p>Vim mode activated. About me opened in "about".</p>';
-                            localStorage.setItem('activeTab', 'about');
-                            break;
-                        case command.startsWith('theme'):
-                            const color = command.split(' ')[1] || 'green';
-                            const themes = {
-                                green: { bg: '#000000', text: '#00FF00', border: '#00FF00' },
-                                blue: { bg: '#001f3f', text: '#00FFFF', border: '#00FFFF' },
-                                purple: { bg: '#1a001a', text: '#FF00FF', border: '#FF00FF' },
-                                red: { bg: '#2d0000', text: '#FF4444', border: '#FF4444' }
-                            };
-                            const selectedTheme = themes[color] || themes.green;
-                            terminalTabs.style.backgroundColor = selectedTheme.bg;
-                            terminalTabs.style.color = selectedTheme.text;
-                            terminalTabs.style.borderColor = selectedTheme.border;
-                            document.querySelectorAll('.tab-btn').forEach(btn => {
-                                btn.style.borderColor = selectedTheme.border;
-                            });
-                            document.querySelector('.tab-buttons').style.borderColor = selectedTheme.border;
-                            terminalInput.style.color = selectedTheme.text;
-                            gamesInput.style.color = selectedTheme.text;
-                            terminalOutput.innerHTML = `<p>Theme changed to "${color}".</p>`;
-                            localStorage.setItem('theme', JSON.stringify(selectedTheme));
-                            break;
-                        case command.startsWith('mode'):
-                            const mode = command.split(' ')[1];
-                            if (mode === 'pentester') {
-                                body.classList.remove('defensive-mode');
-                                terminalOutput.innerHTML = '<p>Switched to Pentester (dark) mode.</p>';
-                                localStorage.setItem('mode', 'pentester');
-                            } else if (mode === 'defensive') {
-                                body.classList.add('defensive-mode');
-                                terminalOutput.innerHTML = '<p>Switched to Defensive (light) mode.</p>';
-                                localStorage.setItem('mode', 'defensive');
-                            } else {
-                                terminalOutput.innerHTML = `
-                                    <p>Invalid mode. Use: mode pentester or mode defensive</p>
-                                `;
-                            }
-                            break;
-                        default:
-                            terminalOutput.innerHTML = `
-                                <p>Command not found: "${command}"</p>
-                                <p>Try: vim, theme [color], mode [pentester/defensive]</p>
-                            `;
-                    }
-                    terminalInput.value = '';
-                }
-            });
-
-            gamesInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    const command = gamesInput.value.toLowerCase().trim();
-                    gamesOutput.innerHTML = '';
-
-                    switch (true) {
-                        case command === 'hack':
-                            gamesOutput.innerHTML = `
-                                <p>Starting hack simulation...</p>
-                                <p>[+] Injecting payload: SQLmap -u "http://target.com" --dbs</p>
-                                <p>[+] Database found: admin_db</p>
-                                <p>[+] Access granted! Flag: {HACK_THE_PLANET}</p>
-                            `;
-                            break;
-                        case command === 'code':
-                            gamesOutput.innerHTML = `
-                                <p>Displaying code snippet:</p>
-                                <pre>
-function secureLogin(user, pass) {
-    const sanitized = DOMPurify.sanitize(user);
-    return fetch('/api/login', {
-        method: 'POST',
-        body: JSON.stringify({ user: sanitized, pass })
-    }).then(res => res.json());
-}
-                                </pre>
-                                <p>[+] Code secure against XSS</p>
-                            `;
-                            break;
-                        case command === 'scan':
-                            gamesOutput.innerHTML = `
-                                <p>Starting network scan...</p>
-                                <p>nmap -sS -p 1-65535 192.168.1.1</p>
-                                <p>[+] Open ports: 22, 80, 443</p>
-                                <p>[+] Services: SSH, HTTP, HTTPS</p>
-                                <p>[+] Scan completed in 0.42s</p>
-                            `;
-                            break;
-                        case command === 'clear':
-                            gamesOutput.innerHTML = '';
-                            break;
-                        case command === 'crack':
-                            gamesOutput.innerHTML = `
-                                <p>Crack the secret code!</p>
-                                <p>Hint: What’s essential for a pen tester?</p>
-                                <p>Type: crack [answer]</p>
-                            `;
-                            break;
-                        case command.startsWith('crack '):
-                            const answer = command.split(' ')[1];
-                            if (answer === 'nmap') {
-                                gamesOutput.innerHTML = `
-                                    <p>[+] Code cracked successfully!</p>
-                                    <p>Flag: {CRACK3D_TH3_C0D3}</p>
-                                    <p>Congratulations, hacker!</p>
-                                `;
-                            } else {
-                                gamesOutput.innerHTML = `
-                                    <p>[-] Wrong answer. Try again.</p>
-                                    <p>Hint: Favorite scanning tool.</p>
-                                `;
-                            }
-                            break;
-                        case command === 'hackgame':
-                            gamesOutput.innerHTML = `
-                                <p>[+] Initiating hack challenge...</p>
-                                <p>Guess the password (3 attempts): Type "guess [password]"</p>
-                            `;
-                            sessionStorage.setItem('attempts', '3');
-                            sessionStorage.setItem('password', 'root123');
-                            break;
-                        case command.startsWith('guess '):
-                            const guess = command.split(' ')[1];
-                            const password = sessionStorage.getItem('password');
-                            let attempts = parseInt(sessionStorage.getItem('attempts'));
-                            if (guess === password) {
-                                gamesOutput.innerHTML = `
-                                    <p>[+] Access granted! Flag: {HACKER_PRO}</p>
-                                `;
-                                sessionStorage.removeItem('attempts');
-                                sessionStorage.removeItem('password');
-                            } else {
-                                attempts--;
-                                sessionStorage.setItem('attempts', attempts);
-                                if (attempts > 0) {
-                                    gamesOutput.innerHTML = `
-                                        <p>[-] Wrong password. ${attempts} attempts left.</p>
-                                    `;
-                                } else {
-                                    gamesOutput.innerHTML = `
-                                        <p>[-] Access denied. Out of attempts.</p>
-                                    `;
-                                    sessionStorage.removeItem('attempts');
-                                    sessionStorage.removeItem('password');
-                                }
-                            }
-                            break;
-                        case command === 'sniff':
-                            gamesOutput.innerHTML = `
-                                <p>[+] Sniffing network traffic...</p>
-                            `;
-                            for (let i = 0; i < 10; i++) {
-                                let packet = document.createElement('div');
-                                packet.className = 'packet';
-                                packet.textContent = `Packet #${i}`;
-                                packet.style.top = Math.random() * 100 + '%';
-                                document.body.appendChild(packet);
-                                setTimeout(() => packet.remove(), 5000);
-                            }
-                            break;
-                        case command === 'matrix':
-                            gamesOutput.innerHTML = `
-                                <p>[+] Entering the Matrix...</p>
-                            `;
-                            let canvas = document.createElement('canvas');
-                            canvas.style.position = 'fixed';
-                            canvas.style.top = '0';
-                            canvas.style.left = '0';
-                            canvas.style.zIndex = '9999';
-                            canvas.width = window.innerWidth;
-                            canvas.height = window.innerHeight;
-                            document.body.appendChild(canvas);
-                            let ctx = canvas.getContext('2d');
-                            let chars = '01';
-                            let drops = Array(256).fill(0);
-                            let matrixInterval = setInterval(() => {
-                                ctx.fillStyle = 'rgba(0,0,0,0.05)';
-                                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                                ctx.fillStyle = body.classList.contains('defensive-mode') ? '#000000' : '#00FF00';
-                                drops.forEach((y, i) => {
-                                    let char = chars[Math.floor(Math.random() * chars.length)];
-                                    ctx.fillText(char, i * 10, y);
-                                    drops[i] = y > 800 + Math.random() * 10000 ? 0 : y + 10;
-                                });
-                            }, 30);
-                            setTimeout(() => {
-                                clearInterval(matrixInterval);
-                                canvas.remove();
-                            }, 5000);
-                            break;
-                        case command === 'secret':
-                            gamesOutput.innerHTML = `
-                                <p>[+] Hidden message unlocked: "The Matrix has you..."</p>
-                            `;
-                            break;
-                        case command === '1337':
-                            gamesOutput.innerHTML = `
-                                <p>[+] Elite status confirmed. Flag: {L33T_H4CK3R}</p>
-                            `;
-                            break;
-                        default:
-                            gamesOutput.innerHTML = `
-                                <p>Game not found: "${command}"</p>
-                                <p>Try: hack, code, scan, clear, crack, hackgame, sniff, matrix, secret, 1337</p>
-                            `;
-                    }
-                    gamesInput.value = '';
-                }
-            });
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script>(function(){var _0x1=console.log;console.log=function(){};document.addEventListener('keydown',function(_0x2){if(_0x2.ctrlKey&&(_0x2.key==='u'||_0x2.key==='s')){_0x2.preventDefault();return false;}});})();document.addEventListener('DOMContentLoaded',()=>{var _0x3=document.getElementById('introPage'),_0x4=document.getElementById('terminalContainer'),_0x5=document.getElementById('enterTerminal'),_0x6=document.getElementById('terminalInput'),_0x7=document.getElementById('terminalOutput'),_0x8=document.getElementById('gamesInput'),_0x9=document.getElementById('gamesOutput'),_0xa=document.getElementById('terminalTabs'),_0xb=document.getElementById('vimAbout'),_0xc=document.body,_0xd='home',_0xe={bg:'#000000',text:'#00FF00',border:'#00FF00'},_0xf='pentester';_0x3.style.display='flex';_0x4.classList.remove('active');_0x5.addEventListener('click',()=>{_0x3.style.animation='fadeOut 1s forwards';_0x4.classList.add('active');setTimeout(()=>{_0x3.style.display='none';document.querySelectorAll('.tab-btn').forEach(_0x10=>_0x10.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(_0x11=>_0x11.classList.remove('active'));document.querySelector(`[data-tab="${_0xd}"]`).classList.add('active');document.getElementById(_0xd).classList.add('active');},1000);});var _0x12=document.querySelectorAll('.typed-text');_0x12.forEach(_0x13=>{_0x13.style.animation='typing 3.5s steps(40, end)';});var _0x14=document.querySelectorAll('.tab-btn'),_0x15=document.querySelectorAll('.tab-content');_0x14.forEach(_0x16=>{_0x16.addEventListener('click',(_0x17)=>{var _0x18=_0x16.getAttribute('data-tab');if(_0x18!=='articles'){_0x14.forEach(_0x19=>_0x19.classList.remove('active'));_0x15.forEach(_0x1a=>_0x1a.classList.remove('active'));_0x16.classList.add('active');document.getElementById(_0x18).classList.add('active');_0xd=_0x18;if(_0x18==='console'){_0x6.focus();}else if(_0x18==='games'){_0x8.focus();}}});});_0x6.addEventListener('keypress',(_0x1b)=>{if(_0x1b.key==='Enter'){var _0x1c=_0x6.value.toLowerCase().trim();_0x7.innerHTML='';switch(true){case _0x1c==='vim':_0x14.forEach(_0x1d=>_0x1d.classList.remove('active'));_0x15.forEach(_0x1e=>_0x1e.classList.remove('active'));document.querySelector('[data-tab="about"]').classList.add('active');document.getElementById('about').classList.add('active');_0xb.classList.add('active');_0x7.innerHTML='<p>Vim mode activated. About me opened in "about".</p>';_0xd='about';break;case _0x1c.startsWith('theme'):var _0x1f=_0x1c.split(' ')[1]||'green',_0x20={green:{bg:'#000000',text:'#00FF00',border:'#00FF00'},blue:{bg:'#001f3f',text:'#00FFFF',border:'#00FFFF'},purple:{bg:'#1a001a',text:'#FF00FF',border:'#FF00FF'},red:{bg:'#2d0000',text:'#FF4444',border:'#FF4444'}};_0xe=_0x20[_0x1f]||_0x20.green;_0xa.style.backgroundColor=_0xe.bg;_0xa.style.color=_0xe.text;_0xa.style.borderColor=_0xe.border;document.querySelectorAll('.tab-btn').forEach(_0x21=>{_0x21.style.borderColor=_0xe.border;});document.querySelector('.tab-buttons').style.borderColor=_0xe.border;_0x6.style.color=_0xe.text;_0x8.style.color=_0xe.text;_0x7.innerHTML=`<p>Theme changed to "${_0x1f}".</p>`;break;case _0x1c.startsWith('mode'):var _0x22=_0x1c.split(' ')[1];if(_0x22==='pentester'){_0xc.classList.remove('defensive-mode');_0x7.innerHTML='<p>Switched to Pentester (dark) mode.</p>';_0xf='pentester';}else if(_0x22==='defensive'){_0xc.classList.add('defensive-mode');_0x7.innerHTML='<p>Switched to Defensive (light) mode.</p>';_0xf='defensive';}else{_0x7.innerHTML='<p>Invalid mode. Use: mode pentester or mode defensive</p>';}break;default:_0x7.innerHTML=`<p>Command not found: "${_0x1c}"</p><p>Try: vim, theme [color], mode [pentester/defensive]</p>`;}_0x6.value='';}});_0x8.addEventListener('keypress',(_0x23)=>{if(_0x23.key==='Enter'){var _0x24=_0x8.value.toLowerCase().trim();_0x9.innerHTML='';switch(true){case _0x24==='hack':_0x9.innerHTML='<p>Starting hack simulation...</p><p>[+] Injecting payload: SQLmap -u "http://target.com" --dbs</p><p>[+] Database found: admin_db</p><p>[+] Access granted! Flag: {HACK_THE_PLANET}</p>';break;case _0x24==='code':_0x9.innerHTML='<p>Displaying code snippet:</p><pre>\nfunction secureLogin(user, pass) {\n    const sanitized = DOMPurify.sanitize(user);\n    return fetch(\'/api/login\', {\n        method: \'POST\',\n        body: JSON.stringify({ user: sanitized, pass })\n    }).then(res => res.json());\n}\n</pre><p>[+] Code secure against XSS</p>';break;case _0x24==='scan':_0x9.innerHTML='<p>Starting network scan...</p><p>nmap -sS -p 1-65535 192.168.1.1</p><p>[+] Open ports: 22, 80, 443</p><p>[+] Services: SSH, HTTP, HTTPS</p><p>[+] Scan completed in 0.42s</p>';break;case _0x24==='clear':_0x9.innerHTML='';break;case _0x24==='crack':_0x9.innerHTML='<p>Crack the secret code!</p><p>Hint: What’s essential for a pen tester?</p><p>Type: crack [answer]</p>';break;case _0x24.startsWith('crack '):var _0x25=_0x24.split(' ')[1];if(_0x25==='nmap'){_0x9.innerHTML='<p>[+] Code cracked successfully!</p><p>Flag: {CRACK3D_TH3_C0D3}</p><p>Congratulations, hacker!</p>';}else{_0x9.innerHTML='<p>[-] Wrong answer. Try again.</p><p>Hint: Favorite scanning tool.</p>';}break;case _0x24==='hackgame':_0x9.innerHTML='<p>[+] Initiating hack challenge...</p><p>Guess the password (3 attempts): Type "guess [password]"</p>';sessionStorage.setItem('attempts','3');sessionStorage.setItem('password','root123');break;case _0x24.startsWith('guess '):var _0x26=_0x24.split(' ')[1],_0x27=sessionStorage.getItem('password'),_0x28=parseInt(sessionStorage.getItem('attempts'));if(_0x26===_0x27){_0x9.innerHTML='<p>[+] Access granted! Flag: {HACKER_PRO}</p>';sessionStorage.removeItem('attempts');sessionStorage.removeItem('password');}else{_0x28--;sessionStorage.setItem('attempts',_0x28);if(_0x28>0){_0x9.innerHTML=`<p>[-] Wrong password. ${_0x28} attempts left.</p>`;}else{_0x9.innerHTML='<p>[-] Access denied. Out of attempts.</p>';sessionStorage.removeItem('attempts');sessionStorage.removeItem('password');}}break;case _0x24==='sniff':_0x9.innerHTML='<p>[+] Sniffing network traffic...</p>';for(let i=0;i<10;i++){var _0x29=document.createElement('div');_0x29.className='packet';_0x29.textContent=`Packet #${i}`;_0x29.style.top=Math.random()*100+'%';document.body.appendChild(_0x29);setTimeout(() => _0x29.remove(),5000);}break;case _0x24==='matrix':_0x9.innerHTML='<p>[+] Entering the Matrix...</p>';var _0x2a=document.createElement('canvas');_0x2a.style.position='fixed';_0x2a.style.top='0';_0x2a.style.left='0';_0x2a.style.zIndex='9999';_0x2a.width=window.innerWidth;_0x2a.height=window.innerHeight;document.body.appendChild(_0x2a);var _0x2b=_0x2a.getContext('2d'),_0x2c='01',_0x2d=Array(256).fill(0),_0x2e=setInterval(() => {_0x2b.fillStyle='rgba(0,0,0,0.05)';_0x2b.fillRect(0,0,_0x2a.width,_0x2a.height);_0x2b.fillStyle=_0xc.classList.contains('defensive-mode')?'#000000':'#00FF00';_0x2d.forEach((_0x2f,_0x30)=>{var _0x31=_0x2c[Math.floor(Math.random()*_0x2c.length)];_0x2b.fillText(_0x31,_0x30*10,_0x2f);_0x2d[_0x30]=_0x2f>800+Math.random()*10000?0:_0x2f+10;});},30);setTimeout(() => {clearInterval(_0x2e);_0x2a.remove();},5000);break;case _0x24==='secret':_0x9.innerHTML='<p>[+] Hidden message unlocked: "The Matrix has you..."</p>';break;case _0x24==='1337':_0x9.innerHTML='<p>[+] Elite status confirmed. Flag: {L33T_H4CK3R}</p>';break;default:_0x9.innerHTML=`<p>Game not found: "${_0x24}"</p><p>Try: hack, code, scan, clear, crack, hackgame, sniff, matrix, secret, 1337</p>`;}_0x8.value='';}});});</script>
 </body>
 </html>
